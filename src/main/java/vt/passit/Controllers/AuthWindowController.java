@@ -21,7 +21,8 @@ public class AuthWindowController extends BaseController {
     }
 
     @FXML public void loginButtonClicked(){
-        System.out.println("LOGIN BUTTON");
+        String tempUsername = usernameField.getText();
+        String tempPassword = passwordField.getText();
     }
 
     private void handleRegisterLinkAction(ActionEvent event) {
