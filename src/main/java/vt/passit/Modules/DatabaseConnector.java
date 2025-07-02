@@ -35,12 +35,12 @@ public class DatabaseConnector {
         try {
             connection = getConnection();
             if (connection != null) {
-                String sql = "INSERT INTO Accounts (username, password_hash, email, role) VALUES (?, ?, ?)";
+                String sql = "INSERT INTO Accounts (username, password_hash, email, role) VALUES (?, ?, ?, ?)";
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setString(1, username);
                 pstmt.setString(2, hashedPassword);
                 pstmt.setString(3, email);
-                pstmt.setString(4, String.valueOf(Role.User));
+                pstmt.setString(4, String.valueOf(Role.USER));
 
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
@@ -92,6 +92,67 @@ public class DatabaseConnector {
             closeResources(rs, pstmt, connection);
         }
         return exists;
+    }
+
+    public static User getUserByEmail(String email) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        User user = null;
+
+        try {
+            connection = getConnection();
+            if (connection != null) {
+                String sql = "SELECT id, username, password_hash, email, role, created_at FROM Accounts WHERE email = ?";
+                pstmt = connection.prepareStatement(sql);
+                pstmt.setString(1, email);
+
+                rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    int id = rs.getInt("id");
+                    String username = rs.getString("username");
+                    String passwordHash = rs.getString("password_hash");
+                    String fetchedEmail = rs.getString("email");
+                    String roleString = rs.getString("role");
+
+                    Role roleEnum;
+                    try {
+                        roleEnum = Role.valueOf(roleString.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Помилка: Невідома роль '" + roleString + "' для користувача " + username + ". Встановлення ролі за замовчуванням USER.");
+                        roleEnum = Role.USER;
+                    }
+                    Timestamp createdAt = rs.getTimestamp("created_at");
+
+                    user = new User(id, username, passwordHash, fetchedEmail, roleEnum, createdAt);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Помилка при отриманні користувача за email '" + email + "':");
+            e.printStackTrace();
+        } finally {
+            closeResources(rs, pstmt, connection);
+        }
+        return user;
+    }
+
+    public static User authenticateUser(String email, String rawPassword) {
+        User user = getUserByEmail(email);
+
+        if (user == null) {
+            System.out.println("Користувача з email '" + email + "' не знайдено.");
+            return null;
+        }
+
+        boolean passwordMatches = HashData.verifyPassword(rawPassword, user.getPasswordHash());
+
+        if (passwordMatches) {
+            System.out.println("Аутентифікація успішна для користувача '" + user.getUsername() + "'. Роль: " + user.getRole());
+            return user;
+        } else {
+            System.out.println("Невірна комбінація email/пароля для '" + email + "'.");
+            return null;
+        }
     }
 
     public static void closeResources(ResultSet rs, Statement stmt, Connection conn) {

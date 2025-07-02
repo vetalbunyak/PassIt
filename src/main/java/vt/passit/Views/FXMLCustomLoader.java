@@ -1,4 +1,4 @@
-package vt.passit.VIews;
+package vt.passit.Views;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

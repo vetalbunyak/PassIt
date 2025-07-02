@@ -2,7 +2,7 @@ package vt.passit;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import vt.passit.VIews.FXMLCustomLoader;
+import vt.passit.Views.FXMLCustomLoader;
 
 import java.io.IOException;
 

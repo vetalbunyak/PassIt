@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import vt.passit.Modules.CustomAlert;
 import vt.passit.Modules.DatabaseConnector;
 import vt.passit.Modules.EmailValidator;
-import vt.passit.VIews.FXMLCustomLoader;
+import vt.passit.Views.FXMLCustomLoader;
 
 import java.io.IOException;
 
