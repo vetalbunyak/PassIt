@@ -1,5 +1,7 @@
 package vt.passit.Modules;
 
+import vt.passit.Role;
+
 import java.sql.*;
 
 public class DatabaseConnector {
@@ -33,11 +35,12 @@ public class DatabaseConnector {
         try {
             connection = getConnection();
             if (connection != null) {
-                String sql = "INSERT INTO Accounts (username, password_hash, email) VALUES (?, ?, ?)";
+                String sql = "INSERT INTO Accounts (username, password_hash, email, role) VALUES (?, ?, ?)";
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setString(1, username);
                 pstmt.setString(2, hashedPassword);
                 pstmt.setString(3, email);
+                pstmt.setString(4, String.valueOf(Role.User));
 
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
