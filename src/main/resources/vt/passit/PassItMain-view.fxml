@@ -1,14 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="vt.passit.Controllers.PassItMainController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-  </padding>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="vt.passit.Controllers.PassItMainController"
+            fx:id="mainRoot"
+            styleClass="main-root"
+            prefWidth="1024" prefHeight="768">
 
-  <Label fx:id="welcomeText"/>
-</VBox>
+  <top>
+    <HBox alignment="CENTER_RIGHT"
+          spacing="10"
+          styleClass="top-bar"
+          BorderPane.alignment="TOP_CENTER">
+      <Region fx:id="topSpacer" HBox.hgrow="ALWAYS"/>
+      <MenuButton fx:id="accountButton" text="Акаунт" styleClass="account-button">
+        <items>
+          <MenuItem text="Мої тести" fx:id="myTestsItem"/>
+          <MenuItem text="Налаштування" fx:id="settingsItem"/>
+          <MenuItem text="Вихід" fx:id="logoutItem"/>
+        </items>
+      </MenuButton>
+    </HBox>
+  </top>
+
+  <center>
+    <VBox fx:id="centerBox"
+          alignment="TOP_CENTER"
+          spacing="30"
+          BorderPane.alignment="CENTER"
+          styleClass="center-content-pane">
+      <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+      </padding>
+
+      <TextField fx:id="searchField"
+                 promptText="Пошук тестів..."
+                 styleClass="search-field"
+                 maxWidth="600"/>
+
+      <Label text="Популярні тести" styleClass="section-title"/>
+
+      <ScrollPane fitToWidth="true" fitToHeight="true"
+                  maxHeight="Infinity" maxWidth="Infinity">
+        <content>
+          <FlowPane fx:id="popularTestsPane"
+                    hgap="20" vgap="20"
+                    alignment="CENTER"
+                    styleClass="popular-tests-pane">
+            <padding>
+              <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+          </FlowPane>
+        </content>
+      </ScrollPane>
+    </VBox>
+  </center>
+
+</BorderPane>

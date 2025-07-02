@@ -1,6 +1,7 @@
 package vt.passit.Views;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import vt.passit.Interfaces.SceneController;
@@ -13,9 +14,10 @@ public class FXMLCustomLoader{
     private Stage stage;
     private Scene scene;
     private final Object controller;
+    private FXMLLoader loader;
 
     public FXMLCustomLoader(String pathToFXML) throws IOException {
-        FXMLLoader loader = new FXMLLoader(PassItMain.class.getResource(pathToFXML));
+        loader = new FXMLLoader(PassItMain.class.getResource(pathToFXML));
         this.scene = new Scene(loader.load());
         this.controller = loader.getController();
 
@@ -32,7 +34,7 @@ public class FXMLCustomLoader{
     }
 
     public FXMLCustomLoader(String pathToFXML, int x, int y) throws IOException {
-        FXMLLoader loader = new FXMLLoader(PassItMain.class.getResource(pathToFXML));
+        loader = new FXMLLoader(PassItMain.class.getResource(pathToFXML));
         this.scene = new Scene(loader.load(), x, y);
         this.controller = loader.getController();
 
@@ -83,6 +85,10 @@ public class FXMLCustomLoader{
 
     public Object getController(){
         return this.controller;
+    }
+
+    public Node load() throws IOException {
+        return loader.load();
     }
 
     public void close(){

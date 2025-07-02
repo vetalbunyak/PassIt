@@ -55,7 +55,7 @@ public class AuthWindowController extends BaseController {
                 SessionManager.getInstance().login(authenticatedUser);
 
                 CustomAlert alert = new CustomAlert(Alert.AlertType.INFORMATION, "Ласкаво просимо, " + authenticatedUser.getUsername() + "!");
-                alert.show();
+                alert.showAndWait();
 
                 closeAuthWindow();
                 try {
@@ -116,8 +116,10 @@ public class AuthWindowController extends BaseController {
     }
 
     private void showMainWindow(User user) throws IOException {
-        FXMLCustomLoader loader = new FXMLCustomLoader("PassItMain-view.fxml", 400, 300);
+        FXMLCustomLoader loader = new FXMLCustomLoader("PassItMain-view.fxml", 1200, 800);
         Stage newStage = loader.getStage();
+        newStage.setMinWidth(600);
+        newStage.setMinHeight(600);
 
         if(loader.getController() instanceof PassItMainController) {
             ((PassItMainController) loader.getController()).setUser(user);
