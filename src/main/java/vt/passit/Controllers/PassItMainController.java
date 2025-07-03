@@ -4,14 +4,18 @@ import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import vt.passit.Animations.TestCardAnimator;
 import vt.passit.Modules.SessionManager;
 import vt.passit.Modules.Test;
 import vt.passit.Modules.User;
 import javafx.util.Duration;
 import javafx.application.Platform;
+import vt.passit.Views.FXMLCustomLoader;
 
-public class PassItMainController {
+import java.io.IOException;
+
+public class PassItMainController extends BaseController{
     @FXML private BorderPane mainRoot;
     @FXML private HBox topBar;
     @FXML private Region topSpacer;
@@ -102,7 +106,19 @@ public class PassItMainController {
     }
 
     private void handleLogout() {
+        SessionManager.getInstance().logout();
 
+        try{
+            FXMLCustomLoader loader = new FXMLCustomLoader("AuthWindow-view.fxml", 400, 300);
+            Stage newStage = loader.getStage();
+
+            newStage.setTitle("Авторизація");
+            newStage.centerOnScreen();
+            this.stage.close();
+            newStage.show();
+        } catch(IOException e){
+
+        }
     }
 
     private void loadPopularTests() {
