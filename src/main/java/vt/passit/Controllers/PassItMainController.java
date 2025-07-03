@@ -20,23 +20,16 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class PassItMainController extends BaseController{
-    @FXML private BorderPane mainRoot;
-    @FXML private HBox topBar;
-    @FXML private Region topSpacer;
     @FXML private MenuButton accountButton;
     @FXML private MenuItem profileItem;
     @FXML private MenuItem myTestsItem;
     @FXML private MenuItem settingsItem;
     @FXML private MenuItem logoutItem;
 
-    @FXML private VBox centerBox;
     @FXML private TextField searchField;
-    @FXML private Label sectionTitle;
     @FXML private FlowPane popularTestsPane;
-    private User user;
 
     public void setUser(User user) {
-        this.user = user;
         if (user != null) {
             accountButton.setText(user.getName());
             System.out.println("Головна панель завантажена для користувача: " + user.getName() + ", роль: " + user.getRole());
@@ -85,29 +78,29 @@ public class PassItMainController extends BaseController{
 
     @FXML
     public void initialize() {
-        profileItem.setOnAction(event -> {
+        profileItem.setOnAction(_ -> {
             try {
                 handleProfile();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
-        myTestsItem.setOnAction(event -> handleMyTests());
-        settingsItem.setOnAction(event -> {
+        myTestsItem.setOnAction(_ -> handleMyTests());
+        settingsItem.setOnAction(_ -> {
             try {
                 handleSettings();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
-        logoutItem.setOnAction(event -> handleLogout());
+        logoutItem.setOnAction(_ -> handleLogout());
 
         Platform.runLater(() -> {
             final double initialPrefWidth = searchField.prefWidthProperty().get();
 
             final double expandedPrefWidth = initialPrefWidth * 1.5;
 
-            searchField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            searchField.focusedProperty().addListener((_, _, newVal) -> {
                 ParallelTransition animIn = new ParallelTransition();
                 ParallelTransition animOut = new ParallelTransition();
 
@@ -128,7 +121,7 @@ public class PassItMainController extends BaseController{
                 }
             });
 
-            accountButton.pressedProperty().addListener((obs, wasPressed, isPressed) -> {
+            accountButton.pressedProperty().addListener((_, _, isPressed) -> {
                 ScaleTransition st = new ScaleTransition(Duration.millis(100), accountButton);
                 if (isPressed) {
                     st.setToX(0.95);
@@ -149,7 +142,18 @@ public class PassItMainController extends BaseController{
     }
 
     private void handleProfile() throws IOException {
+        FXMLCustomLoader loader = new FXMLCustomLoader("Profile-view.fxml");
+        Stage newStage = loader.getStage();
 
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.initOwner(this.stage);
+        newStage.setTitle("Профіль");
+        newStage.setMinWidth(700);
+        newStage.setMinHeight(600);
+        newStage.setWidth(700);
+        newStage.setHeight(600);
+        newStage.centerOnScreen();
+        newStage.show();
     }
 
     private void handleMyTests() {
@@ -182,7 +186,7 @@ public class PassItMainController extends BaseController{
             newStage.centerOnScreen();
             this.stage.close();
             newStage.show();
-        } catch(IOException e){
+        } catch(IOException _){
 
         }
     }
