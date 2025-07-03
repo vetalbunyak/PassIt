@@ -3,7 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="vt.passit.Controllers.PassItMainController"
@@ -19,6 +18,7 @@
       <Region fx:id="topSpacer" HBox.hgrow="ALWAYS"/>
       <MenuButton fx:id="accountButton" text="Акаунт" styleClass="account-button">
         <items>
+          <MenuItem text="Профіль" fx:id="profileItem"/>
           <MenuItem text="Мої тести" fx:id="myTestsItem"/>
           <MenuItem text="Налаштування" fx:id="settingsItem"/>
           <MenuItem text="Вихід" fx:id="logoutItem"/>

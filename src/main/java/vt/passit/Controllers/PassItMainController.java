@@ -3,7 +3,10 @@ package vt.passit.Controllers;
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vt.passit.Animations.TestCardAnimator;
 import vt.passit.Modules.SessionManager;
@@ -14,12 +17,14 @@ import javafx.application.Platform;
 import vt.passit.Views.FXMLCustomLoader;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class PassItMainController extends BaseController{
     @FXML private BorderPane mainRoot;
     @FXML private HBox topBar;
     @FXML private Region topSpacer;
     @FXML private MenuButton accountButton;
+    @FXML private MenuItem profileItem;
     @FXML private MenuItem myTestsItem;
     @FXML private MenuItem settingsItem;
     @FXML private MenuItem logoutItem;
@@ -36,19 +41,65 @@ public class PassItMainController extends BaseController{
             accountButton.setText(user.getName());
             System.out.println("Головна панель завантажена для користувача: " + user.getName() + ", роль: " + user.getRole());
 
-            if (SessionManager.getInstance().isAdmin()) {
-                System.out.println("Користувач є адміністратором.");
+            String userProfilePicturePath = user.getProfilePicturePath();
+
+            try {
+                Image userIcon;
+                if (userProfilePicturePath != null && !userProfilePicturePath.isEmpty()) {
+                    userIcon = new Image("file:" + userProfilePicturePath);
+                    if (userIcon.isError()) {
+                        throw new Exception("Не вдалося завантажити зображення з шляху: " + userProfilePicturePath);
+                    }
+                } else {
+
+                    userIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/vt/passit/Images/default_user.png"))); // Or your generic user-icon.png
+                    if (userIcon.isError()) {
+                        throw new Exception("Не вдалося завантажити стандартну іконку користувача.");
+                    }
+                }
+
+                ImageView iconView = new ImageView(userIcon);
+                iconView.setFitWidth(20);
+                iconView.setFitHeight(20);
+                accountButton.setGraphic(iconView);
+
+            } catch (Exception e) {
+                System.err.println("Помилка завантаження іконки профілю: " + e.getMessage());
+                try {
+                    Image fallbackIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/vt/passit/Images/default_user.png"))); // Ensure this path is correct
+                    ImageView fallbackIconView = new ImageView(fallbackIcon);
+                    fallbackIconView.setFitWidth(20);
+                    fallbackIconView.setFitHeight(20);
+                    accountButton.setGraphic(fallbackIconView);
+                } catch (Exception fallbackE) {
+                    System.err.println("Помилка завантаження резервної іконки: " + fallbackE.getMessage());
+                    accountButton.setGraphic(null);
+                }
             }
         } else {
             accountButton.setText("Гість");
+            accountButton.setGraphic(null);
             System.err.println("Помилка: Головна панель завантажена без авторизованого користувача.");
         }
     }
 
     @FXML
     public void initialize() {
+        profileItem.setOnAction(event -> {
+            try {
+                handleProfile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         myTestsItem.setOnAction(event -> handleMyTests());
-        settingsItem.setOnAction(event -> handleSettings());
+        settingsItem.setOnAction(event -> {
+            try {
+                handleSettings();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         logoutItem.setOnAction(event -> handleLogout());
 
         Platform.runLater(() -> {
@@ -97,12 +148,27 @@ public class PassItMainController extends BaseController{
 
     }
 
+    private void handleProfile() throws IOException {
+
+    }
+
     private void handleMyTests() {
 
     }
 
-    private void handleSettings() {
+    private void handleSettings() throws IOException {
+        FXMLCustomLoader loader = new FXMLCustomLoader("ProfileSettings-view.fxml");
+        Stage newStage = loader.getStage();
 
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.initOwner(this.stage);
+        newStage.setTitle("Налаштування");
+        newStage.setMinWidth(700);
+        newStage.setMinHeight(900);
+        newStage.setWidth(700);
+        newStage.setHeight(900);
+        newStage.centerOnScreen();
+        newStage.show();
     }
 
     private void handleLogout() {

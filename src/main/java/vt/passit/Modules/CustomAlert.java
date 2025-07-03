@@ -2,23 +2,38 @@ package vt.passit.Modules;
 
 import javafx.scene.control.Alert;
 
-public class CustomAlert extends Alert{
-    AlertType type;
-    String text;
+import java.util.Objects;
 
-    public CustomAlert(AlertType alertType, String text) {
-        super(alertType, text);
+public class CustomAlert extends Alert {
 
-        this.type = alertType;
-        this.text = text;
+    public CustomAlert(AlertType alertType, String message) {
+        super(alertType);
+
+        this.setContentText(message);
         this.setHeaderText(null);
-    }
 
-    public String getText(){
-        return text;
-    }
+        if (alertType == AlertType.ERROR) {
+            this.setTitle("Помилка!");
+        } else if (alertType == AlertType.WARNING) {
+            this.setTitle("Увага!");
+        } else if (alertType == AlertType.INFORMATION) {
+            this.setTitle("Інформація");
+        } else if (alertType == AlertType.CONFIRMATION) {
+            this.setTitle("Підтвердження");
+        } else {
+            this.setTitle("Повідомлення");
+        }
 
-    public void setText(String text){
-        this.text = text;
+
+        this.getDialogPane().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/vt/passit/CSS/styles.css")).toExternalForm());
+
+        if (alertType == AlertType.ERROR) {
+            this.getDialogPane().getStyleClass().add("error-alert");
+        } else if (alertType == AlertType.WARNING) {
+            this.getDialogPane().getStyleClass().add("warning-alert");
+        } else if (alertType == AlertType.INFORMATION) {
+            this.getDialogPane().getStyleClass().add("information-alert");
+        }
+
     }
 }

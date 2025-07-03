@@ -210,3 +210,197 @@
 .menu-item:focused .label {
     -fx-text-fill: white;
 }
+
+.profile-root-pane {
+    -fx-background-color: #2c313c;
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-top-bar {
+    -fx-background-color: #3b4151;
+    -fx-padding: 15 30 15 30;
+}
+
+.profile-title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.back-button {
+    -fx-background-color: #ff4981;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-background-color: #e63773;
+}
+
+.profile-content-box {
+    -fx-background-color: #3b4151;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 10, 0, 0, 4);
+    -fx-padding: 30 40;
+    -fx-spacing: 25;
+    -fx-alignment: TOP_CENTER;
+    -fx-max-width: 500px;
+    -fx-min-height: 500px;
+}
+
+.profile-image-view {
+    -fx-background-color: #4a4f63;
+    -fx-background-radius: 60;
+    -fx-border-color: #ff4981;
+    -fx-border-width: 3;
+    -fx-border-radius: 60;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 8, 0, 0, 2);
+}
+
+.change-photo-button {
+    -fx-background-color: #4a4f63;
+    -fx-text-fill: #ddd;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+
+.change-photo-button:hover {
+    -fx-background-color: #5d647a;
+    -fx-text-fill: white;
+}
+
+.profile-label {
+    -fx-text-fill: #ddd;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.profile-input-field {
+    -fx-background-color: #4a4f63;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #aaa;
+    -fx-border-width: 0;
+    -fx-font-size: 15px;
+    -fx-background-radius: 10;
+    -fx-padding: 8 12;
+}
+
+.profile-input-field:focused {
+    -fx-prompt-text-fill: transparent;
+    -fx-background-color: #5d647a;
+}
+
+.profile-role-label {
+    -fx-text-fill: #ff4981;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.profile-save-button {
+    -fx-background-color: #00b894;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-background-radius: 25;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+}
+
+.profile-save-button:hover {
+    -fx-background-color: #00a382;
+}
+
+.profile-cancel-button {
+    -fx-background-color: #ff4981;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-background-radius: 25;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+}
+
+.profile-cancel-button:hover {
+    -fx-background-color: #e63773;
+}
+
+.dialog-pane {
+    -fx-background-color: #3b4151;
+    -fx-background-radius: 10;
+    -fx-border-color: #4a4f63;
+    -fx-border-width: 1px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 10, 0, 0, 4);
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 10px 0;
+}
+
+.dialog-pane .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.dialog-pane .content {
+    -fx-background-color: #4a4f63;
+    -fx-text-fill: #ddd;
+    -fx-font-size: 14px;
+    -fx-padding: 15px;
+    -fx-background-radius: 5;
+    -fx-text-alignment: center;
+}
+
+.dialog-pane .button-bar {
+    -fx-padding: 15px 0 0 0;
+    -fx-background-color: transparent;
+}
+
+.dialog-pane .button {
+    -fx-background-color: #ff4981;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button:hover {
+    -fx-background-color: #e63773;
+}
+
+.dialog-pane.error-alert {
+    -fx-border-color: #ff4981;
+    -fx-border-width: 2px;
+}
+
+.dialog-pane.error-alert .header-panel .label {
+    -fx-text-fill: #ff4981;
+}
+
+.dialog-pane.warning-alert {
+    -fx-border-color: #f7b731;
+    -fx-border-width: 2px;
+}
+
+.dialog-pane.warning-alert .header-panel .label {
+    -fx-text-fill: #f7b731;
+}
+
+
+.dialog-pane.information-alert {
+    -fx-border-color: #00b894;
+    -fx-border-width: 2px;
+}
+
+.dialog-pane.information-alert .header-panel .label {
+    -fx-text-fill: #00b894;
+}

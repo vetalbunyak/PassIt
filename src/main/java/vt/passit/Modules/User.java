@@ -25,6 +25,22 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public void setName(String name) {
+         this.name = name;
+    }
+
+    public void setLastName(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public int getId() {
         return id;
     }
@@ -43,6 +59,14 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public String getProfilePicturePath() {
+        return image_url;
+    }
+
+    public String getLastName(){
+        return last_name;
     }
 
     public Timestamp getCreatedAt() {

@@ -141,6 +141,40 @@ public class DatabaseConnector {
         return user;
     }
 
+    public static void updateUser(User user) throws SQLException {
+        String sql = "UPDATE Accounts SET " +
+                "name = ?, " +
+                "password_hash = ?, " +
+                "email = ?, " +
+                "last_name = ?, " +
+                "profile_image_url = ?, " +
+                "role = ? " +
+                "WHERE id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, user.getName());
+            pstmt.setString(2, user.getPasswordHash());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setString(4, user.getLastName());
+            pstmt.setString(5, user.getProfilePicturePath());
+            pstmt.setString(6, user.getRole().name());
+            pstmt.setInt(7, user.getId());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Користувач з ID " + user.getId() + " успішно оновлений.");
+            } else {
+                System.out.println("Користувача з ID " + user.getId() + " не знайдено.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQL Помилка під час оновлення: " + e.getMessage());
+            throw e;
+        }
+    }
+
     public static User authenticateUser(String email, String rawPassword) {
         User user = getUserByEmail(email);
 
