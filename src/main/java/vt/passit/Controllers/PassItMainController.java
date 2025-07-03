@@ -1,12 +1,15 @@
 package vt.passit.Controllers;
 
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import vt.passit.Animations.TestCardAnimator;
 import vt.passit.Modules.SessionManager;
 import vt.passit.Modules.Test;
 import vt.passit.Modules.User;
-
+import javafx.util.Duration;
+import javafx.application.Platform;
 
 public class PassItMainController {
     @FXML private BorderPane mainRoot;
@@ -26,8 +29,8 @@ public class PassItMainController {
     public void setUser(User user) {
         this.user = user;
         if (user != null) {
-            accountButton.setText(user.getUsername());
-            System.out.println("Головна панель завантажена для користувача: " + user.getUsername() + ", роль: " + user.getRole());
+            accountButton.setText(user.getName());
+            System.out.println("Головна панель завантажена для користувача: " + user.getName() + ", роль: " + user.getRole());
 
             if (SessionManager.getInstance().isAdmin()) {
                 System.out.println("Користувач є адміністратором.");
@@ -44,7 +47,44 @@ public class PassItMainController {
         settingsItem.setOnAction(event -> handleSettings());
         logoutItem.setOnAction(event -> handleLogout());
 
-        searchField.setOnAction(event -> handleSearch());
+        Platform.runLater(() -> {
+            final double initialPrefWidth = searchField.prefWidthProperty().get();
+
+            final double expandedPrefWidth = initialPrefWidth * 1.5;
+
+            searchField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+                ParallelTransition animIn = new ParallelTransition();
+                ParallelTransition animOut = new ParallelTransition();
+
+                KeyValue kvWidthIn = new KeyValue(searchField.prefWidthProperty(), expandedPrefWidth, Interpolator.EASE_BOTH);
+                KeyFrame kfWidthIn = new KeyFrame(Duration.millis(300), kvWidthIn);
+                Timeline timelineWidthIn = new Timeline(kfWidthIn);
+
+                KeyValue kvWidthOut = new KeyValue(searchField.prefWidthProperty(), initialPrefWidth, Interpolator.EASE_BOTH);
+                KeyFrame kfWidthOut = new KeyFrame(Duration.millis(300), kvWidthOut);
+                Timeline timelineWidthOut = new Timeline(kfWidthOut);
+
+                if (newVal) {
+                    animIn.getChildren().addAll(timelineWidthIn);
+                    animIn.play();
+                } else {
+                    animOut.getChildren().addAll(timelineWidthOut);
+                    animOut.play();
+                }
+            });
+
+            accountButton.pressedProperty().addListener((obs, wasPressed, isPressed) -> {
+                ScaleTransition st = new ScaleTransition(Duration.millis(100), accountButton);
+                if (isPressed) {
+                    st.setToX(0.95);
+                    st.setToY(0.95);
+                } else {
+                    st.setToX(1.0);
+                    st.setToY(1.0);
+                }
+                st.play();
+            });
+        });
 
         loadPopularTests();
     }
@@ -99,10 +139,14 @@ public class PassItMainController {
 
         card.setOnMouseClicked(event -> {
             int clickedTestId = (int) card.getUserData();
-            System.out.println("Картка тесту ID: " + clickedTestId + ", Назва: " + test.getTitle() + " натиснута.");
+            System.out.println("Картка тесту ID: " + clickedTestId + ", Назва: " + test.getTitle() + " клікнута.");
+            // TODO: логіка початку тесту при кліку на картку
         });
 
         card.getChildren().addAll(titleLabel, descLabel);
+
+        TestCardAnimator.applyHoverAnimation(card);
+
         return card;
     }
 }

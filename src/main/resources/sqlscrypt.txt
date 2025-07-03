@@ -1,8 +1,10 @@
 CREATE TABLE IF NOT EXISTS Accounts (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
+    last_name VARCHAR(50),
+    profile_image_url VARCHAR(255),
     role VARCHAR(100) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -12,6 +14,7 @@ CREATE TABLE IF NOT EXISTS Tests (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     category VARCHAR(100),
+    total_attempts_count INT DEFAULT 0,
     created_by_user_id INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (created_by_user_id) REFERENCES Accounts(id)

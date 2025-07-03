@@ -6,18 +6,22 @@ import java.sql.Timestamp;
 
 public class User {
     private int id;
-    private String username;
+    private String name;
+    private String last_name;
+    private String image_url;
     private String passwordHash;
     private String email;
     private Role role;
     private Timestamp createdAt;
 
-    public User(int id, String username, String passwordHash, String email, Role role, Timestamp createdAt) { // <-- Приймає Role enum
+    public User(int id, String name, String passwordHash, String email, String last_name, String image_url, Role role, Timestamp createdAt) {
         this.id = id;
-        this.username = username;
+        this.name = name;
         this.passwordHash = passwordHash;
         this.email = email;
         this.role = role;
+        this.last_name = last_name;
+        this.image_url = image_url;
         this.createdAt = createdAt;
     }
 
@@ -25,8 +29,8 @@ public class User {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public String getPasswordHash() {
@@ -57,7 +61,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 ", createdAt=" + createdAt +

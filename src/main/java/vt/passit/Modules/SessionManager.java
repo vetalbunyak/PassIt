@@ -20,12 +20,12 @@ public class SessionManager {
 
     public void login(User user){
         this.currentUser = user;
-        System.out.println("Користувач '" + user.getUsername() + "' авторизований. Роль: " + user.getRole());
+        System.out.println("Користувач '" + user.getName() + "' авторизований. Роль: " + user.getRole());
     }
 
     public void logout() {
         if (currentUser != null) {
-            System.out.println("Користувач '" + currentUser.getUsername() + "' вийшов з системи.");
+            System.out.println("Користувач '" + currentUser.getName() + "' вийшов з системи.");
         }
         this.currentUser = null;
     }

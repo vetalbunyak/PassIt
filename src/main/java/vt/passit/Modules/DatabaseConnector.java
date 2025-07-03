@@ -25,9 +25,10 @@ public class DatabaseConnector {
         return connection;
     }
 
-    public static boolean addUser(String username, String pass, String email) {
+    public static boolean addUser(String name, String pass, String email) {
         String hashedPassword = HashData.hashPassword(pass);
-
+        String last_name = "";
+        String profile_image_url = "";
         Connection connection = null;
         PreparedStatement pstmt = null;
         boolean success = false;
@@ -35,23 +36,25 @@ public class DatabaseConnector {
         try {
             connection = getConnection();
             if (connection != null) {
-                String sql = "INSERT INTO Accounts (username, password_hash, email, role) VALUES (?, ?, ?, ?)";
+                String sql = "INSERT INTO Accounts (name, password_hash, email, last_name, profile_image_url, role) VALUES (?, ?, ?, ?, ?, ?)";
                 pstmt = connection.prepareStatement(sql);
-                pstmt.setString(1, username);
+                pstmt.setString(1, name);
                 pstmt.setString(2, hashedPassword);
                 pstmt.setString(3, email);
-                pstmt.setString(4, String.valueOf(Role.USER));
+                pstmt.setString(4, last_name);
+                pstmt.setString(5, profile_image_url);
+                pstmt.setString(6, String.valueOf(Role.USER));
 
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
-                    System.out.println("Користувача '" + username + "' успішно додано.");
+                    System.out.println("Користувача '" + email + "' успішно додано.");
                     success = true;
                 } else {
-                    System.out.println("Не вдалося додати користувача '" + username + "'.");
+                    System.out.println("Не вдалося додати користувача '" + email + "'.");
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Помилка при додаванні користувача '" + username + "':");
+            System.err.println("Помилка при додаванні користувача '" + email + "':");
             e.printStackTrace();
             if (e.getSQLState().startsWith("23")) {
                 System.err.println("Можливо, користувач з таким іменем або email вже існує.");
@@ -103,28 +106,30 @@ public class DatabaseConnector {
         try {
             connection = getConnection();
             if (connection != null) {
-                String sql = "SELECT id, username, password_hash, email, role, created_at FROM Accounts WHERE email = ?";
+                String sql = "SELECT id, name, password_hash, email, last_name, profile_image_url, role, created_at FROM Accounts WHERE email = ?";
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setString(1, email);
 
                 rs = pstmt.executeQuery();
                 if (rs.next()) {
                     int id = rs.getInt("id");
-                    String username = rs.getString("username");
+                    String name = rs.getString("name");
                     String passwordHash = rs.getString("password_hash");
                     String fetchedEmail = rs.getString("email");
                     String roleString = rs.getString("role");
+                    String fetchedLastName = rs.getString("last_name");
+                    String fetchedProfileImage = rs.getString("profile_image_url");
 
                     Role roleEnum;
                     try {
                         roleEnum = Role.valueOf(roleString.toUpperCase());
                     } catch (IllegalArgumentException e) {
-                        System.err.println("Помилка: Невідома роль '" + roleString + "' для користувача " + username + ". Встановлення ролі за замовчуванням USER.");
+                        System.err.println("Помилка: Невідома роль '" + roleString + "' для користувача " + name + ". Встановлення ролі за замовчуванням USER.");
                         roleEnum = Role.USER;
                     }
                     Timestamp createdAt = rs.getTimestamp("created_at");
 
-                    user = new User(id, username, passwordHash, fetchedEmail, roleEnum, createdAt);
+                    user = new User(id, name, passwordHash, fetchedEmail, fetchedLastName, fetchedProfileImage, roleEnum, createdAt);
                 }
             }
         } catch (SQLException e) {
@@ -147,7 +152,7 @@ public class DatabaseConnector {
         boolean passwordMatches = HashData.verifyPassword(rawPassword, user.getPasswordHash());
 
         if (passwordMatches) {
-            System.out.println("Аутентифікація успішна для користувача '" + user.getUsername() + "'. Роль: " + user.getRole());
+            System.out.println("Аутентифікація успішна для користувача '" + user.getName() + "'. Роль: " + user.getRole());
             return user;
         } else {
             System.out.println("Невірна комбінація email/пароля для '" + email + "'.");

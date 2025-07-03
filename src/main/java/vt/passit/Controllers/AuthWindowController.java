@@ -54,7 +54,7 @@ public class AuthWindowController extends BaseController {
             if(authenticatedUser != null) {
                 SessionManager.getInstance().login(authenticatedUser);
 
-                CustomAlert alert = new CustomAlert(Alert.AlertType.INFORMATION, "Ласкаво просимо, " + authenticatedUser.getUsername() + "!");
+                CustomAlert alert = new CustomAlert(Alert.AlertType.INFORMATION, "Ласкаво просимо, " + authenticatedUser.getName() + "!");
                 alert.showAndWait();
 
                 closeAuthWindow();
@@ -125,7 +125,7 @@ public class AuthWindowController extends BaseController {
             ((PassItMainController) loader.getController()).setUser(user);
         }
 
-        newStage.setTitle("PassIt" + " " + user.getUsername());
+        newStage.setTitle("PassIt" + " " + user.getName());
         newStage.show();
     }
 
