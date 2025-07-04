@@ -404,3 +404,46 @@
 .dialog-pane.information-alert .header-panel .label {
     -fx-text-fill: #00b894;
 }
+
+.test-details-box {
+    -fx-background-color: #3b4151;
+    -fx-background-radius: 15;
+    -fx-padding: 30 40;
+    -fx-spacing: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 8, 0, 0, 4);
+    -fx-min-width: 500px;
+    -fx-max-width: 600px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.test-detail-title {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.test-detail-desc {
+    -fx-text-fill: #ddd;
+    -fx-font-size: 15px;
+    -fx-wrap-text: true;
+}
+
+.test-detail-info {
+    -fx-text-fill: #bbb;
+    -fx-font-size: 14px;
+}
+
+.start-test-button {
+    -fx-background-color: #00b894;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-background-radius: 20;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+
+.start-test-button:hover {
+    -fx-background-color: #00a382;
+}

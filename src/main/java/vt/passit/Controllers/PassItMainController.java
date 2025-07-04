@@ -2,6 +2,8 @@ package vt.passit.Controllers;
 
 import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,7 +27,8 @@ public class PassItMainController extends BaseController{
     @FXML private MenuItem myTestsItem;
     @FXML private MenuItem settingsItem;
     @FXML private MenuItem logoutItem;
-
+    @FXML private BorderPane mainRoot;
+    @FXML private VBox centerBox;
     @FXML private TextField searchField;
     @FXML private FlowPane popularTestsPane;
 
@@ -59,7 +62,7 @@ public class PassItMainController extends BaseController{
             } catch (Exception e) {
                 System.err.println("Помилка завантаження іконки профілю: " + e.getMessage());
                 try {
-                    Image fallbackIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/vt/passit/Images/default_user.png"))); // Ensure this path is correct
+                    Image fallbackIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/vt/passit/Images/default_user.png")));
                     ImageView fallbackIconView = new ImageView(fallbackIcon);
                     fallbackIconView.setFitWidth(20);
                     fallbackIconView.setFitHeight(20);
@@ -226,7 +229,8 @@ public class PassItMainController extends BaseController{
         card.setOnMouseClicked(event -> {
             int clickedTestId = (int) card.getUserData();
             System.out.println("Картка тесту ID: " + clickedTestId + ", Назва: " + test.getTitle() + " клікнута.");
-            // TODO: логіка початку тесту при кліку на картку
+
+            showTestDetails(test);
         });
 
         card.getChildren().addAll(titleLabel, descLabel);
@@ -235,4 +239,67 @@ public class PassItMainController extends BaseController{
 
         return card;
     }
+
+    private void showTestDetails(Test test) {
+        VBox testDetailsBox = new VBox(15);
+        testDetailsBox.setPadding(new Insets(30, 40, 30, 40));
+        testDetailsBox.setAlignment(Pos.TOP_LEFT);
+        testDetailsBox.getStyleClass().add("test-details-box");
+
+        Label title = new Label("Назва: " + test.getTitle());
+        title.getStyleClass().add("test-detail-title");
+
+        Label description = new Label("Опис: " + test.getDescription());
+        description.getStyleClass().add("test-detail-desc");
+        description.setWrapText(true);
+
+        Label author = new Label("Автор: Іван Тестувальник");
+        author.getStyleClass().add("test-detail-info");
+
+        Label attempts = new Label("Кількість проходжень: " + test.getPopularityScore());
+        attempts.getStyleClass().add("test-detail-info");
+
+        Label createdDate = new Label("Дата створення: 2024-06-30");
+        createdDate.getStyleClass().add("test-detail-info");
+
+        Label category = new Label("Категорія: Програмування");
+        category.getStyleClass().add("test-detail-info");
+
+        Label questionCount = new Label("Кількість питань: 10");
+        questionCount.getStyleClass().add("test-detail-info");
+
+        Button startButton = new Button("Почати тест");
+        startButton.getStyleClass().add("start-test-button");
+        startButton.setOnAction(e -> {
+            System.out.println("Початок тесту ID: " + test.getId());
+        });
+
+        Button backButton = new Button("← Назад");
+        backButton.getStyleClass().add("back-button");
+        backButton.setOnAction(e -> {
+            centerBox.setVisible(true);
+            ((BorderPane) mainRoot).setCenter(centerBox);
+        });
+
+        testDetailsBox.getChildren().addAll(
+                backButton,
+                title,
+                description,
+                author,
+                attempts,
+                createdDate,
+                category,
+                questionCount,
+                startButton
+        );
+
+        VBox centeredContainer = new VBox(testDetailsBox);
+        centeredContainer.setAlignment(Pos.CENTER);
+        centeredContainer.setPadding(new Insets(20));
+        centeredContainer.setFillWidth(false);
+
+        centerBox.setVisible(false);
+        ((BorderPane) mainRoot).setCenter(centeredContainer);
+    }
+
 }
